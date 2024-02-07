@@ -1,10 +1,19 @@
 
-import React, { useState } from 'react';
+import React, { useState , useEffect} from 'react';
 import axios from 'axios';
 
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+
+  const [formations, setFormations] = useState([]);
+
+    useEffect(() => {
+        axios.get('http://localhost:8080/api/formations')
+            .then(response => setFormations(response.data))
+            .catch(error => console.error('Erreur lors de la requête API :', error));
+           
+    }, []);
 
   const handleLogin = async () => {
     try {
@@ -15,6 +24,11 @@ const Login = () => {
 
       // Handle successful login
       console.log(response.data);
+    //   return  <ul>
+    //             {formations.map(formation => (
+    //                 <li key={formation.codeFormation}>{formation.codeFormation}</li>
+    //             ))}
+    //         </ul> ;
     } catch (error) {
       // Handle login error
       console.error('Login failed:', error.response.data);
